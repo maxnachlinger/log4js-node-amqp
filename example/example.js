@@ -6,7 +6,7 @@ log4js.addAppender(
 	amqpAppender.appender({
 		// more config options available
 		connection: {
-			url: "amqp://guest:guest@vm:5672"
+			url: "amqp://guest:guest@localhost:5672"
 		}
 	}),
 	'amqp-example'
@@ -26,7 +26,7 @@ log4js.configure({
 		{
 			type: 'log4js-node-amqp',
 			connection: {
-				url: "amqp://guest:guest@vm:5672"
+				url: "amqp://guest:guest@localhost:5672"
 			},
 			category: 'amqp-example'
 		}
