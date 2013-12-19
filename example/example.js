@@ -1,5 +1,5 @@
 var log4js = require('log4js');
-var amqpAppender = require('log4js-node-amqp');
+var amqpAppender = require('..');
 
 // configure in code
 log4js.addAppender(
@@ -34,6 +34,8 @@ log4js.configure({
 });
 var logger = log4js.getLogger('amqp-example');
 logThings();
+
+process.exit();
 
 function logThings() {
 	// strings work
