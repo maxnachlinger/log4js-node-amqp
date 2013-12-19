@@ -22,9 +22,7 @@ util.inherits(FakeAmqp, EventEmitter);
 
 FakeAmqp.prototype.connect = function () {
 	var self = this;
-	process.nextTick(function () {
-		self.emit("ready", {});
-	});
+	process.nextTick(self.emit.bind(self, "ready", {}));
 };
 
 FakeAmqp.prototype.exchange = function () {
@@ -33,9 +31,7 @@ FakeAmqp.prototype.exchange = function () {
 	var cb = Array.prototype.slice.call(arguments).pop();
 	cb(self.exchangeObj);
 
-	process.nextTick(function() {
-		self.setupCb();
-	});
+	process.nextTick(self.setupCb.bind(self));
 };
 
 test("Setup", function (t) {
