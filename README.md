@@ -42,6 +42,8 @@ log4js.configure({
 var logger = log4js.getLogger('amqp-example');
 logThings();
 
+process.exit();
+
 function logThings() {
 	// strings work
 	logger.info('a string of log data.');
