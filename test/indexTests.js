@@ -65,7 +65,7 @@ test("a log item written before the appender is connected works", function(t) {
 
 		process.nextTick(function() {
 			t.equal(fakeAmqp.messages.length, 1, "one message was sent: " + util.inspect(fakeAmqp.messages));
-			t.equal(fakeAmqp.messages[0], message, "'" + message + "' was sent");
+			t.equal(fakeAmqp.messages[0].data, message, "'" + message + "' was sent");
 			t.end();
 		});
 	});
@@ -100,7 +100,7 @@ test("a log item written after the appender is connected works", function(t) {
 		fakeAmqp.setupCb = function() {
 			log4js.getLogger('test').info(message);
 			t.equal(fakeAmqp.messages.length, 1, "one message was sent: " + util.inspect(fakeAmqp.messages));
-			t.equal(fakeAmqp.messages[0], message, "'" + message + "' was sent");
+			t.equal(fakeAmqp.messages[0].data, message, "'" + message + "' was sent");
 			t.end();
 		};
 	});
