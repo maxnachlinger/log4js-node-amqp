@@ -1,24 +1,8 @@
 var log4js = require('log4js');
-var amqpAppender = require('..');
 
-// configure in code
-log4js.addAppender(
-	amqpAppender.appender({
-		// more config options available
-		connection: {
-			url: "amqp://guest:guest@localhost:5672"
-		}
-	}),
-	'amqp-example'
-);
-
-var logger = log4js.getLogger('amqp-example');
-logThings();
-
-log4js.clearAppenders();
-
-// or configure via configure()
-log4js.configure({
+// This could be require()'d too. If you don't want to configure in this way,
+// you can also call log4js.addAppender(amqpAppender.appender(CONFIG-HERE));
+var config = {
 	appenders: [
 		{
 			type: 'console'
@@ -28,18 +12,18 @@ log4js.configure({
 			connection: {
 				url: "amqp://guest:guest@localhost:5672"
 			},
-			category: 'amqp-example'
+			category: 'example'
 		}
 	]
-});
-var logger = log4js.getLogger('amqp-example');
-logThings();
+};
+
+log4js.configure(config);
+var logger = log4js.getLogger('example');
+
+// strings work
+logger.info('a string of log data.');
+
+// so do objects
+logger.info({name: 'a string', type: 'a silly example'});
 
 process.exit();
-
-function logThings() {
-	// strings work
-	logger.info('a string of log data.');
-	// so do objects
-	logger.info({name: 'a string', type: 'a silly example'});
-}
