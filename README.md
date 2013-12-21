@@ -82,7 +82,7 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
 }
 
 ```
-### What's sent to the exchage?
+### What's sent to the exchange?
 ```javascript
 // Everything log4js provides
 {
