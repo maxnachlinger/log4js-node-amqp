@@ -4,11 +4,11 @@ An AMQP appender for log4js-node
 
 [![Build Status](https://travis-ci.org/maxnachlinger/log4js-node-amqp.png?branch=master)](https://travis-ci.org/maxnachlinger/log4js-node-amqp)
 ### Usage:
+Configure in code:
 ```javascript
 var log4js = require('log4js');
 var amqpAppender = require('log4js-node-amqp');
 
-// configure in code
 log4js.addAppender(
 	amqpAppender.appender({
 		// more config options available
@@ -18,13 +18,9 @@ log4js.addAppender(
 	}),
 	'amqp-example'
 );
-
-var logger = log4js.getLogger('amqp-example');
-logThings();
-
-log4js.clearAppenders();
-
-// or configure via configure()
+```
+or configure via ``configure()`` You could also ``require()`` a config .json or .js file here, any Javascript object will work with log4js.
+```javascript
 log4js.configure({
 	appenders: [
 		{
@@ -39,17 +35,14 @@ log4js.configure({
 		}
 	]
 });
+```
+Log things:
+```javascript
 var logger = log4js.getLogger('amqp-example');
-logThings();
-
-process.exit();
-
-function logThings() {
-	// strings work
-	logger.info('a string of log data.');
-	// so do objects
-	logger.info({name: 'a string', type: 'a silly example'});
-}
+// strings work
+logger.info('a string of log data.');
+// so do objects
+logger.info({name: 'a string', type: 'a silly example'});
 ```
 ### Configuration
 This is a log4js appender which uses the awesome [node-amqp](https://github.com/postwait/node-amqp) package and shares a good bit of config with it.
