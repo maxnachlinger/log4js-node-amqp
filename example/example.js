@@ -12,7 +12,10 @@ var config = {
 			connection: {
 				url: "amqp://guest:guest@localhost:5672"
 			},
-			category: 'example'
+			category: 'example',
+			additionalInfo: {
+				application: 'example application'
+			}
 		}
 	]
 };

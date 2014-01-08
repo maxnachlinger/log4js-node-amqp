@@ -192,6 +192,46 @@ test("multiple log items written after the appender is connected work", function
 	});
 });
 
+test("additionalInfo is logged when present", function(t) {
+	var message = 'test-message';
+	var fakeAmqp = new FakeAmqp();
+
+	t.test("Setup", function(t) {
+		log4js.clearAppenders();
+		mockery.registerMock('amqp', {
+			createConnection: function () {
+				fakeAmqp.connect();
+				return fakeAmqp;
+			}
+		});
+		t.end();
+	});
+
+	t.test(function (t) {
+		var applicationName = 'test-application-name';
+		var index = require('../lib/index');
+
+		log4js.addAppender(index.configure({
+			additionalInfo: {
+				applicationName: applicationName
+			}
+		}), 'test');
+
+		fakeAmqp.setupCb = function() {
+			log4js.getLogger('test').info(message);
+			t.equal(fakeAmqp.messages.length, 1, "one message was sent: " + util.inspect(fakeAmqp.messages));
+			t.equal(fakeAmqp.messages[0].applicationName, applicationName, "applicationName '" + applicationName + "' was sent");
+			t.end();
+		};
+	});
+
+	t.test("Teardown", function (t) {
+		mockery.deregisterAll();
+		mockery.resetCache();
+		t.end();
+	});
+});
+
 test("Teardown", function (t) {
 	mockery.disable();
 	t.end();

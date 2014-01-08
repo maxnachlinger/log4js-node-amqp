@@ -14,6 +14,11 @@ log4js.addAppender(
 		// more config options available
 		connection: {
 			url: "amqp://guest:guest@localhost:5672"
+		},
+		// this is a space for you to add custom bits to every log message
+		additonalInfo: {
+			machine: require("os").hostname(),
+			applicationName: 'example application'
 		}
 	}),
 	'amqp-example'
@@ -31,6 +36,11 @@ log4js.configure({
 			connection: {
 				url: "amqp://guest:guest@localhost:5672"
 			},
+			// this is a space for you to add custom bits to every log message
+			additonalInfo: {
+				machine: require("os").hostname(),
+				applicationName: 'example application'
+			}
 			category: 'amqp-example'
 		}
 	]
@@ -72,13 +82,17 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
 	// interval at which to flush messages to the queue, 0 means "immediate"
 	sendInterval: 0,
 	// a log4js layout, this is ignored if the logged item is an object
-	layout: log4js.layouts.messagePassThroughLayout
+	layout: log4js.layouts.messagePassThroughLayout,
+	// this is a space for you to add custom bits to every log message
+	additonalInfo: {
+		//
+	}
 }
 
 ```
 ### What's sent to the exchange?
 ```javascript
-// Everything log4js provides
+// Everything log4js provides, + whatever you added to additonalInfo (keys in additonalInfo are added as keys to the log message).
 {
   timestamp: Fri Dec 20 2013 20:54:22 GMT-0800 (PST),
   data: 'test-message',
@@ -89,4 +103,4 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
 ### License
 [The MIT License](http://opensource.org/licenses/MIT) 
 
-Copyright (c) 2013 Max Nachlinger
+Copyright (c) 2014 Max Nachlinger
