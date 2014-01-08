@@ -92,7 +92,8 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
 ```
 ### What's sent to the exchange?
 ```javascript
-// Everything log4js provides, + whatever you added to additonalInfo (keys in additonalInfo are added as keys to the log message).
+// Everything log4js provides, + whatever you added to additonalInfo 
+// (keys in additonalInfo are added as keys to the log message).
 {
   timestamp: Fri Dec 20 2013 20:54:22 GMT-0800 (PST),
   data: 'test-message',
