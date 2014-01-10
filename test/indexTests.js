@@ -31,6 +31,13 @@ FakeAmqp.prototype.exchange = function () {
 
 	var cb = Array.prototype.slice.call(arguments).pop();
 	cb(self.exchangeObj);
+};
+
+FakeAmqp.prototype.queue = function () {
+	var self = this;
+
+	var cb = Array.prototype.slice.call(arguments).pop();
+	cb({bind: function() {}});
 
 	process.nextTick(self.setupCb.bind(self));
 };
