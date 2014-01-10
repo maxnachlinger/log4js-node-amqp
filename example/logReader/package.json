@@ -1,0 +1,6 @@
+{
+	"main": "example.js",
+	"dependencies": {
+		"amqp": "~0.1.8"
+	}
+}
