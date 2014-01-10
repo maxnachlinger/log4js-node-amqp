@@ -58,7 +58,7 @@ logger.info('a string of log data.');
 // so do objects
 logger.info({name: 'a string', type: 'a silly example'});
 ```
-You can also have a look at the [example](example/example.js).
+You can also have a look at the [example](example/log/example.js).
 ### Configuration
 This is a log4js appender which uses the awesome [node-amqp](https://github.com/postwait/node-amqp) package and shares a good bit of config with it.
 ```javascript
