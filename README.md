@@ -111,6 +111,9 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
   category: 'test'
 }
 ```
+### Reading things from the log-queue
+If you want some ideas on how to read things from the log queue, have a look at this [simple log reader example](example/logReader/example.js).
+
 ### License
 [The MIT License](http://opensource.org/licenses/MIT) 
 
