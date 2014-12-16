@@ -4,7 +4,7 @@ An AMQP appender for log4js-node
 
 [![NPM](https://nodei.co/npm/log4js-node-amqp.png)](https://nodei.co/npm/log4js-node-amqp/)
 
-[![Build Status](https://travis-ci.org/maxnachlinger/log4js-node-amqp.png?branch=master)](https://travis-ci.org/maxnachlinger/log4js-node-amqp)
+[![Build Status](https://travis-ci.org/maxnachlinger/log4js-node-amqp.svg?branch=master)](https://travis-ci.org/maxnachlinger/log4js-node-amqp)
 ### Installation:
 ```
 npm install log4js-node-amqp
