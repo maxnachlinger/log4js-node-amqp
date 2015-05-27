@@ -117,7 +117,8 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
   category: 'test'
 }
 
-// if you specified a logEventInterceptor in options, then whatever logEventInterceptor returns will be sent, e.g.:
+// if you specified a logEventInterceptor in options,
+// then whatever logEventInterceptor returns will be sent, e.g.:
 log4js.configure({
   appenders: [
     {
