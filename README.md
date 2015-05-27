@@ -98,6 +98,10 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
   // this is a space for you to add custom bits to every log message
   additonalInfo: {
     //
+  },
+  // if you'd like to alter the logEvent before it's sent to the exchange
+  logEventInterceptor: function(logEvent, additionalInfo) {
+    //
   }
 }
 
@@ -112,6 +116,19 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
   level: { level: 20000, levelStr: 'INFO' },
   category: 'test'
 }
+
+// if you specified a logEventInterceptor in options, then whatever logEventInterceptor returns will be sent, e.g.:
+log4js.configure({
+  appenders: [
+    {
+      type: 'log4js-node-amqp',
+      // more config here
+      logEventInterceptor: function(logEvent, additionalInfo) {
+        return (logEvent.data || {}).message; // send a simple string to the exchange
+      }
+    }
+  ]
+});
 ```
 ### Reading things from the log-queue
 If you want some ideas on how to read things from the log queue, have a look at this [simple log reader example](example/logReader/example.js).
@@ -119,4 +136,4 @@ If you want some ideas on how to read things from the log queue, have a look at 
 ### License
 [The MIT License](http://opensource.org/licenses/MIT) 
 
-Copyright (c) 2014 Max Nachlinger
+Copyright (c) 2015 Max Nachlinger

@@ -1,30 +1,30 @@
 {
-	"name": "log4js-node-amqp",
-	"version": "0.0.71",
-	"description": "An AMQP appender for log4js-node",
-	"main": "lib/index.js",
-	"directories": {
-		"test": "test"
-	},
-	"scripts": {
-		"test": "node test/indexTests.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/maxnachlinger/log4js-node-amqp.git"
-	},
-	"author": "Max Nachlinger <max@somewhere.com>",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/maxnachlinger/log4js-node-amqp/issues"
-	},
-	"homepage": "https://github.com/maxnachlinger/log4js-node-amqp",
-	"dependencies": {
-		"amqp": "~0.1.8",
-		"log4js": "~0.6.9"
-	},
-	"devDependencies": {
-		"tape": "~2.3.2",
-		"mockery": "~1.4.0"
-	}
+  "name": "log4js-node-amqp",
+  "version": "0.0.8",
+  "description": "An AMQP appender for log4js-node",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/indexTests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/maxnachlinger/log4js-node-amqp.git"
+  },
+  "author": "Max Nachlinger <max@somewhere.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxnachlinger/log4js-node-amqp/issues"
+  },
+  "homepage": "https://github.com/maxnachlinger/log4js-node-amqp",
+  "dependencies": {
+    "amqp": "~0.1.8",
+    "log4js": "^0.6.25"
+  },
+  "devDependencies": {
+    "tape": "~2.3.2",
+    "mockery": "~1.4.0"
+  }
 }
