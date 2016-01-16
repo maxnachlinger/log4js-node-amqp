@@ -79,7 +79,7 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
     durable: true,
     autoDelete: false
   },
-  // see https://github.com/postwait/node-amqp#queue
+  // see https://github.com/postwait/node-amqp#queue - specifying a queue is optional
   queue: {
     name: 'logQ',
     durable: true,
