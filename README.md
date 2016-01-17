@@ -79,7 +79,9 @@ This is a log4js appender which uses the awesome [node-amqp](https://github.com/
     durable: true,
     autoDelete: false
   },
-  // see https://github.com/postwait/node-amqp#queue - specifying a queue is optional
+  // see https://github.com/postwait/node-amqp#queue - specifying a queue is optional, if you don't
+  // specify one, logs will be published to the exchange. If you do specify a queue, it will be automatically
+  // created and bound to the exchange.
   queue: {
     name: 'logQ',
     durable: true,
