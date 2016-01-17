@@ -1,7 +1,4 @@
 .DS_Store
-.idea/*
-*.iml
-*.log
+.idea
 node_modules
 npm-debug.log
-*.bk.json
