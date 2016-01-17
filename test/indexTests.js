@@ -1,322 +1,299 @@
-"use strict";
-var util = require('util');
-var test = require('tape');
-var log4js = require('log4js');
-var mockery = require('mockery');
-var EventEmitter = require('events').EventEmitter;
+'use strict'
+var util = require('util')
+var test = require('tape')
+var log4js = require('log4js')
+var mockery = require('mockery')
+var EventEmitter = require('events').EventEmitter
 
 function FakeAmqp (hasQueue) {
-  EventEmitter.call(this);
+  EventEmitter.call(this)
 
-  this.hasQueue = hasQueue;
-  this.messages = [];
+  this.hasQueue = hasQueue
+  this.messages = []
   this.setupCb = function () {
-  };
+  }
 
   this.exchangeObj = {
     publish: function (routingKey, msg, options) {
-      this.messages.push(msg);
+      this.messages.push(msg)
     }.bind(this)
-  };
+  }
 }
-util.inherits(FakeAmqp, EventEmitter);
+util.inherits(FakeAmqp, EventEmitter)
 
 FakeAmqp.prototype.connect = function () {
-  var self = this;
-  process.nextTick(self.emit.bind(self, "ready", {}));
-};
+  var self = this
+  process.nextTick(self.emit.bind(self, 'ready', {}))
+}
 
 FakeAmqp.prototype.exchange = function () {
-  var cb = Array.prototype.slice.call(arguments).pop();
-  cb(this.exchangeObj);
+  var cb = Array.prototype.slice.call(arguments).pop()
+  cb(this.exchangeObj)
 
   if (!this.hasQueue) {
-    process.nextTick(this.setupCb.bind(this));
+    process.nextTick(this.setupCb.bind(this))
   }
-};
+}
 
 FakeAmqp.prototype.queue = function () {
-  var cb = Array.prototype.slice.call(arguments).pop();
+  var cb = Array.prototype.slice.call(arguments).pop()
   cb({
     bind: function () { }
-  });
+  })
 
-  process.nextTick(this.setupCb.bind(this));
-};
+  process.nextTick(this.setupCb.bind(this))
+}
 
-test("Setup", function (t) {
+function mockeryReset (t) {
+  mockery.deregisterAll()
+  mockery.resetCache()
+  t.end()
+}
+
+test('Setup', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
     warnOnUnregistered: false
-  });
-  t.end();
-});
+  })
+  t.end()
+})
 
-test("a log item written before the appender is connected works", function (t) {
-  var fakeAmqp = new FakeAmqp();
+test('a log item written before the appender is connected works', function (t) {
+  var fakeAmqp = new FakeAmqp()
 
-  t.test("Setup", function (t) {
-    log4js.clearAppenders();
+  t.test('Setup', function (t) {
+    log4js.clearAppenders()
     mockery.registerMock('amqp', {
       createConnection: function () {
-        fakeAmqp.connect();
-        return fakeAmqp;
+        fakeAmqp.connect()
+        return fakeAmqp
       }
-    });
-    t.end();
-  });
+    })
+    t.end()
+  })
 
   t.test(function (t) {
-    var message = 'test-message';
-    var index = require('../lib/index');
-    log4js.addAppender(index.configure({}), 'test');
-    log4js.getLogger('test').info(message);
+    var message = 'test-message'
+    var index = require('../lib/index')
+    log4js.addAppender(index.configure({}), 'test')
+    log4js.getLogger('test').info(message)
 
     process.nextTick(function () {
-      t.equal(fakeAmqp.messages.length, 1, "one message was sent: " + util.inspect(fakeAmqp.messages));
-      t.equal(fakeAmqp.messages[ 0 ].data, message, "'" + message + "' was sent");
-      t.end();
-    });
-  });
+      t.equal(fakeAmqp.messages.length, 1, 'one message was sent: ' + util.inspect(fakeAmqp.messages))
+      t.equal(fakeAmqp.messages[ 0 ].data, message, message + ' was sent')
+      t.end()
+    })
+  })
 
-  t.test("Teardown", function (t) {
-    mockery.deregisterAll();
-    mockery.resetCache();
-    t.end();
-  });
-});
+  t.test('Teardown', mockeryReset)
+})
 
-test("a log item written after the appender is connected works", function (t) {
-  var fakeAmqp = new FakeAmqp();
+test('a log item written after the appender is connected works', function (t) {
+  var fakeAmqp = new FakeAmqp()
 
-  t.test("Setup", function (t) {
-    log4js.clearAppenders();
+  t.test('Setup', function (t) {
+    log4js.clearAppenders()
     mockery.registerMock('amqp', {
       createConnection: function () {
-        fakeAmqp.connect();
-        return fakeAmqp;
+        fakeAmqp.connect()
+        return fakeAmqp
       }
-    });
-    t.end();
-  });
+    })
+    t.end()
+  })
 
   t.test(function (t) {
-    var message = 'test-message';
-    var index = require('../lib/index');
+    var message = 'test-message'
+    var index = require('../lib/index')
 
-    log4js.addAppender(index.configure({}), 'test');
+    log4js.addAppender(index.configure({}), 'test')
 
     fakeAmqp.setupCb = function () {
-      log4js.getLogger('test').info(message);
-      t.equal(fakeAmqp.messages.length, 1, "one message was sent: " + util.inspect(fakeAmqp.messages));
-      t.equal(fakeAmqp.messages[ 0 ].data, message, "'" + message + "' was sent");
-      t.end();
-    };
-  });
+      log4js.getLogger('test').info(message)
+      t.equal(fakeAmqp.messages.length, 1, 'one message was sent: ' + util.inspect(fakeAmqp.messages))
+      t.equal(fakeAmqp.messages[ 0 ].data, message, message + ' was sent')
+      t.end()
+    }
+  })
 
-  t.test("Teardown", function (t) {
-    mockery.deregisterAll();
-    mockery.resetCache();
-    t.end();
-  });
-});
+  t.test('Teardown', mockeryReset)
+})
 
-test("multiple log items written before the appender is connected work", function (t) {
-  var fakeAmqp = new FakeAmqp();
+test('multiple log items written before the appender is connected work', function (t) {
+  var fakeAmqp = new FakeAmqp()
 
-  t.test("Setup", function (t) {
-    log4js.clearAppenders();
+  t.test('Setup', function (t) {
+    log4js.clearAppenders()
     mockery.registerMock('amqp', {
       createConnection: function () {
-        fakeAmqp.connect();
-        return fakeAmqp;
+        fakeAmqp.connect()
+        return fakeAmqp
       }
-    });
-    t.end();
-  });
+    })
+    t.end()
+  })
 
   t.test(function (t) {
-    var message = 'test-message';
-    var index = require('../lib/index');
-    log4js.addAppender(index.configure({}), 'test');
+    var index = require('../lib/index')
+    log4js.addAppender(index.configure({}), 'test')
 
-    log4js.getLogger('test').info('test message 0');
-    log4js.getLogger('test').info('test message 1');
-    log4js.getLogger('test').info('test message 2');
+    log4js.getLogger('test').info('test message 0')
+    log4js.getLogger('test').info('test message 1')
+    log4js.getLogger('test').info('test message 2')
 
     process.nextTick(function () {
-      t.equal(fakeAmqp.messages.length, 3, "three messages were sent: " + util.inspect(fakeAmqp.messages));
-      t.end();
-    });
-  });
+      t.equal(fakeAmqp.messages.length, 3, 'three messages were sent: ' + util.inspect(fakeAmqp.messages))
+      t.end()
+    })
+  })
 
-  t.test("Teardown", function (t) {
-    mockery.deregisterAll();
-    mockery.resetCache();
-    t.end();
-  });
-});
+  t.test('Teardown', mockeryReset)
+})
 
-test("multiple log items written after the appender is connected work", function (t) {
-  var fakeAmqp = new FakeAmqp();
+test('multiple log items written after the appender is connected work', function (t) {
+  var fakeAmqp = new FakeAmqp()
 
-  t.test("Setup", function (t) {
-    log4js.clearAppenders();
+  t.test('Setup', function (t) {
+    log4js.clearAppenders()
     mockery.registerMock('amqp', {
       createConnection: function () {
-        fakeAmqp.connect();
-        return fakeAmqp;
+        fakeAmqp.connect()
+        return fakeAmqp
       }
-    });
-    t.end();
-  });
+    })
+    t.end()
+  })
 
   t.test(function (t) {
-    var message = 'test-message';
-    var index = require('../lib/index');
+    var index = require('../lib/index')
 
-    log4js.addAppender(index.configure({}), 'test');
+    log4js.addAppender(index.configure({}), 'test')
 
     fakeAmqp.setupCb = function () {
       setTimeout(function () {
-        log4js.getLogger('test').info('test message 0');
-      }, 0);
+        log4js.getLogger('test').info('test message 0')
+      }, 0)
       setTimeout(function () {
-        log4js.getLogger('test').info('test message 1');
-      }, 100);
+        log4js.getLogger('test').info('test message 1')
+      }, 100)
       setTimeout(function () {
-        log4js.getLogger('test').info('test message 2');
-      }, 200);
+        log4js.getLogger('test').info('test message 2')
+      }, 200)
       setTimeout(function () {
-        t.equal(fakeAmqp.messages.length, 3, "three messages were sent: " + util.inspect(fakeAmqp.messages));
-        t.end();
-      }, 300);
-    };
-  });
+        t.equal(fakeAmqp.messages.length, 3, 'three messages were sent: ' + util.inspect(fakeAmqp.messages))
+        t.end()
+      }, 300)
+    }
+  })
 
-  t.test("Teardown", function (t) {
-    mockery.deregisterAll();
-    mockery.resetCache();
-    t.end();
-  });
-});
+  t.test('Teardown', mockeryReset)
+})
 
-test("additionalInfo is logged when present", function (t) {
-  var message = 'test-message';
-  var fakeAmqp = new FakeAmqp();
+test('additionalInfo is logged when present', function (t) {
+  var message = 'test-message'
+  var fakeAmqp = new FakeAmqp()
 
-  t.test("Setup", function (t) {
-    log4js.clearAppenders();
+  t.test('Setup', function (t) {
+    log4js.clearAppenders()
     mockery.registerMock('amqp', {
       createConnection: function () {
-        fakeAmqp.connect();
-        return fakeAmqp;
+        fakeAmqp.connect()
+        return fakeAmqp
       }
-    });
-    t.end();
-  });
+    })
+    t.end()
+  })
 
   t.test(function (t) {
-    var applicationName = 'test-application-name';
-    var index = require('../lib/index');
+    var applicationName = 'test-application-name'
+    var index = require('../lib/index')
 
     log4js.addAppender(index.configure({
       additionalInfo: {
         applicationName: applicationName
       }
-    }), 'test');
+    }), 'test')
 
     fakeAmqp.setupCb = function () {
-      log4js.getLogger('test').info(message);
-      t.equal(fakeAmqp.messages.length, 1, "one message was sent: " + util.inspect(fakeAmqp.messages));
-      t.equal(fakeAmqp.messages[ 0 ].applicationName, applicationName, "applicationName '" + applicationName + "' was sent");
-      t.end();
-    };
-  });
+      log4js.getLogger('test').info(message)
+      t.equal(fakeAmqp.messages.length, 1, 'one message was sent: ' + util.inspect(fakeAmqp.messages))
+      t.equal(fakeAmqp.messages[ 0 ].applicationName, applicationName, 'applicationName ' + applicationName +
+        ' was sent')
+      t.end()
+    }
+  })
 
-  t.test("Teardown", function (t) {
-    mockery.deregisterAll();
-    mockery.resetCache();
-    t.end();
-  });
-});
+  t.test('Teardown', mockeryReset)
+})
 
-test("logs objects", function (t) {
-  var message = { message: 'test-message' };
-  var fakeAmqp = new FakeAmqp();
+test('logs objects', function (t) {
+  var message = { message: 'test-message' }
+  var fakeAmqp = new FakeAmqp()
 
-  t.test("Setup", function (t) {
-    log4js.clearAppenders();
+  t.test('Setup', function (t) {
+    log4js.clearAppenders()
     mockery.registerMock('amqp', {
       createConnection: function () {
-        fakeAmqp.connect();
-        return fakeAmqp;
+        fakeAmqp.connect()
+        return fakeAmqp
       }
-    });
-    t.end();
-  });
+    })
+    t.end()
+  })
 
   t.test(function (t) {
-    var index = require('../lib/index');
+    var index = require('../lib/index')
 
-    log4js.addAppender(index.configure({}), 'test');
+    log4js.addAppender(index.configure({}), 'test')
 
     fakeAmqp.setupCb = function () {
-      log4js.getLogger('test').info(message);
-      t.equal(fakeAmqp.messages.length, 1, "one message was sent: " + util.inspect(fakeAmqp.messages));
-      t.deepEqual(fakeAmqp.messages[ 0 ].data, message);
-      t.end();
-    };
-  });
+      log4js.getLogger('test').info(message)
+      t.equal(fakeAmqp.messages.length, 1, 'one message was sent: ' + util.inspect(fakeAmqp.messages))
+      t.deepEqual(fakeAmqp.messages[ 0 ].data, message)
+      t.end()
+    }
+  })
 
-  t.test("Teardown", function (t) {
-    mockery.deregisterAll();
-    mockery.resetCache();
-    t.end();
-  });
-});
+  t.test('Teardown', mockeryReset)
+})
 
-test("logEventInterceptor transforms logEvents", function (t) {
-  var message = { message: 'test-message' };
-  var fakeAmqp = new FakeAmqp();
+test('logEventInterceptor transforms logEvents', function (t) {
+  var message = { message: 'test-message' }
+  var fakeAmqp = new FakeAmqp()
 
-  t.test("Setup", function (t) {
-    log4js.clearAppenders();
+  t.test('Setup', function (t) {
+    log4js.clearAppenders()
     mockery.registerMock('amqp', {
       createConnection: function () {
-        fakeAmqp.connect();
-        return fakeAmqp;
+        fakeAmqp.connect()
+        return fakeAmqp
       }
-    });
-    t.end();
-  });
+    })
+    t.end()
+  })
 
   t.test(function (t) {
-    var index = require('../lib/index');
+    var index = require('../lib/index')
 
     log4js.addAppender(index.configure({
       logEventInterceptor: function (logEvent, additionalInfo) {
-        return logEvent.data.message;
+        return logEvent.data.message
       }
-    }), 'test');
+    }), 'test')
 
     fakeAmqp.setupCb = function () {
-      log4js.getLogger('test').info(message);
-      t.equal(fakeAmqp.messages.length, 1, "one message was sent: " + util.inspect(fakeAmqp.messages));
-      t.deepEqual(fakeAmqp.messages[ 0 ], message.message);
-      t.end();
-    };
-  });
+      log4js.getLogger('test').info(message)
+      t.equal(fakeAmqp.messages.length, 1, 'one message was sent: ' + util.inspect(fakeAmqp.messages))
+      t.deepEqual(fakeAmqp.messages[ 0 ], message.message)
+      t.end()
+    }
+  })
 
-  t.test("Teardown", function (t) {
-    mockery.deregisterAll();
-    mockery.resetCache();
-    t.end();
-  });
-});
+  t.test('Teardown', mockeryReset)
+})
 
-test("Teardown", function (t) {
-  mockery.disable();
-  t.end();
-});
+test('Teardown', function (t) {
+  mockery.disable()
+  t.end()
+})
