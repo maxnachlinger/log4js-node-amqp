@@ -2,9 +2,20 @@ log4js-node-amqp
 ================
 An AMQP appender for log4js-node
 
-[![NPM](https://nodei.co/npm/log4js-node-amqp.png?compact=true)](https://nodei.co/npm/log4js-node-amqp/)
+[![travis][travis-image]][travis-url]
+[![npm][npm-image]][npm-url]
+[![downloads][downloads-image]][downloads-url]
+[![standard][standard-image]][standard-url]
 
-[![Build Status](https://travis-ci.org/maxnachlinger/log4js-node-amqp.svg?branch=master)](https://travis-ci.org/maxnachlinger/log4js-node-amqp)
+[travis-image]: https://travis-ci.org/maxnachlinger/log4js-node-amqp.svg?branch=master
+[travis-url]: https://travis-ci.org/maxnachlinger/log4js-node-amqp
+[npm-image]: https://img.shields.io/npm/v/log4js-node-amqp.svg?style=flat
+[npm-url]: https://npmjs.org/package/log4js-node-amqp
+[downloads-image]: https://img.shields.io/npm/dm/log4js-node-amqp.svg?style=flat
+[downloads-url]: https://npmjs.org/package/log4js-node-amqp
+[standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[standard-url]: http://standardjs.com/
+
 ### Installation:
 ```
 npm install log4js-node-amqp
