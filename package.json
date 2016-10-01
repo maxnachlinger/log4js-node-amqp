@@ -1,6 +1,6 @@
 {
   "name": "log4js-node-amqp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An AMQP appender for log4js-node",
   "main": "lib/index.js",
   "directories": {
