@@ -24,7 +24,7 @@
     "log4js": "^0.6.25"
   },
   "devDependencies": {
-    "mockery": "~1.7.0",
+    "mockery": "~2.0.0",
     "standard": "^8.3.0",
     "tape": "^4.4.0"
   }
