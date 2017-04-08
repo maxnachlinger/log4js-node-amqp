@@ -36,8 +36,8 @@ FakeAmqp.prototype.exchange = function () {
 }
 
 FakeAmqp.prototype.queue = function () {
-  var cb = Array.prototype.slice.call(arguments).pop()
-  cb({
+  var fn = Array.prototype.slice.call(arguments).pop()
+  fn({
     bind: function () { }
   })
 
