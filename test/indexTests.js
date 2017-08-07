@@ -19,6 +19,7 @@ function FakeAmqp (hasQueue) {
     }.bind(this)
   }
 }
+
 util.inherits(FakeAmqp, EventEmitter)
 
 FakeAmqp.prototype.connect = function () {
@@ -63,7 +64,9 @@ test('a log item written before the appender is connected works', function (t) {
   var fakeAmqp = new FakeAmqp()
 
   t.test('Setup', function (t) {
-    log4js.clearAppenders()
+    if (log4js.clearAppenders) {
+      log4js.clearAppenders()
+    }
     mockery.registerMock('amqp', {
       createConnection: function () {
         fakeAmqp.connect()
