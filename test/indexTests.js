@@ -64,9 +64,7 @@ test('a log item written before the appender is connected works', function (t) {
   var fakeAmqp = new FakeAmqp()
 
   t.test('Setup', function (t) {
-    if (log4js.clearAppenders) {
-      log4js.clearAppenders()
-    }
+    log4js.clearAppenders()
     mockery.registerMock('amqp', {
       createConnection: function () {
         fakeAmqp.connect()
