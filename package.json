@@ -22,7 +22,7 @@
   "homepage": "https://github.com/maxnachlinger/log4js-node-amqp",
   "dependencies": {
     "amqp": "0.2.6",
-    "log4js": "2.3.3"
+    "log4js": "2.3.9"
   },
   "devDependencies": {
     "mockery": "2.1.0",
