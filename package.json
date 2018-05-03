@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "mockery": "2.1.0",
-    "snazzy": "^6.0.0",
+    "snazzy": "7.1.0",
     "standard": "11.0.0",
-    "tape": "4.8.0"
+    "tape": "4.9.0"
   }
 }
