@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/maxnachlinger/log4js-node-amqp",
   "dependencies": {
-    "amqp": "0.2.6",
+    "amqp": "0.2.7",
     "log4js": "2.3.3"
   },
   "devDependencies": {
